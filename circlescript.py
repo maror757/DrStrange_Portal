@@ -47,12 +47,12 @@ def setEmitter( e, p, pos ):
     particlesTailSize = 4
  
     # Looks
-    cmds.setAttr( p + '.particleRenderType', 3 )
+    cmds.setAttr( p + '.particleRenderType', 6 )
     cmds.setAttr( p + '.bounce', 1 )
     cmds.setAttr( p + '.color[1].color_Position', 1 )
     cmds.setAttr( p + '.color[0].color_Color', 1, 0.75, 0 )
     cmds.setAttr( p + '.color[1].color_Color', 1, 0.3259, 0 )
-    cmds.setAttr( p + '.aiRadiusMultiplier', 0.2 )
+    #cmds.setAttr( p + '.aiRadiusMultiplier', 0.2 )
     cmds.setAttr( p + '.dynamicsWeight', particlesWeight )
     cmds.setAttr( p + '.lifespanMode', 2)
     cmds.setAttr( p + '.lifespan', particlesLifespan )
@@ -76,11 +76,59 @@ def setGlow( g ):
     cmds.setAttr( g[0] + '.translateY', 3 )
 
 
+def createSampleEnvironment():
+    cmds.CreatePolygonPlane()
+    floor = 'pPlane1'
+    cmds.setAttr( floor + '.scaleX', 30 )
+    cmds.setAttr( floor + '.scaleZ', 30 )
+    
+    cmds.CreatePolygonPlane()
+    wall1 = 'pPlane2'
+    cmds.setAttr( wall1 + '.scaleX', 20 )
+    cmds.setAttr( wall1 + '.scaleZ', 30 )
+    cmds.setAttr( wall1 + '.rotateZ', 90 )
+    cmds.setAttr( wall1 + '.translateX', -15 )
+    cmds.setAttr( wall1 + '.translateY', 10 )
+    
+    cmds.CreatePolygonPlane()
+    wall2 = 'pPlane3'
+    cmds.setAttr( wall2 + '.scaleX', 30 )
+    cmds.setAttr( wall2 + '.scaleZ', 20 )
+    cmds.setAttr( wall2 + '.rotateX', 90 )
+    cmds.setAttr( wall2 + '.translateZ', -15 )
+    cmds.setAttr( wall2 + '.translateY', 10 )
+    
+    cmds.CreatePolygonCube()
+    cube = 'pCube1'
+    cmds.setAttr( cube + '.scale', 3, 3, 3 )
+    cmds.setAttr( cube + '.translateY', 1.5 )
+    cmds.setAttr( cube + '.translateX', -5 )
+    cmds.setAttr( cube + '.translateZ', -3 )
+    cmds.setAttr( cube + '.rotateY', 30 )
+
+
+def moveCamera():
+    cmds.setAttr('persp.translateX', 9 )
+    cmds.setAttr('persp.translateY', 5 )
+    cmds.setAttr('persp.translateZ', 2 )
+    
+    cmds.setAttr('persp.rotateX', -12 )
+    cmds.setAttr('persp.rotateY', 77 )
+    cmds.setAttr('persp.rotateZ', 0 )
+
+
 # Clear scene
 cmds.select(all=True)
 cmds.delete()
 
 # Setup new scene
+# Setup environment
+createSampleEnvironment()
+
+# Move camera
+moveCamera()
+
+# Setup particle system
 cmds.NCreateEmitter()
 cmds.NCreateEmitter()
 myEmitter1 = 'emitter1'
@@ -88,11 +136,11 @@ myParticle1 = 'nParticle1'
 myEmitter2 = 'emitter2'
 myParticle2 = 'nParticle2'
 myNucleus = 'nucleus1'
-
-cmds.CreatePolygonTorus()
-myGlow = ['pTorus1', 'polyTorus1']
-
 setNucleus( myNucleus )
 setEmitter( myEmitter1, myParticle1, 0 )
 setEmitter( myEmitter2, myParticle2, 180 )
+
+# Setup glow
+cmds.CreatePolygonTorus()
+myGlow = ['pTorus1', 'polyTorus1']
 setGlow( myGlow )
