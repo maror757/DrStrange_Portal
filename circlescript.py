@@ -74,6 +74,14 @@ def setGlow( g ):
     cmds.setAttr( g[1] + '.subdivisionsHeight', 10 )
     cmds.setAttr( g[0] + '.rotateZ', 90 )
     cmds.setAttr( g[0] + '.translateY', 3 )
+    
+    glow_material = cmds.shadingNode('lambert', asShader=True)
+    cmds.select( g[0] )
+    cmds.hyperShade( assign=glow_material )
+    cmds.setAttr( glow_material + '.color', 1.0, 0.6, 0.1 )
+    cmds.setAttr( glow_material + '.transparency', 0.2, 0.2, 0.2 )
+    cmds.setAttr( glow_material + '.hideSource', True )
+    cmds.setAttr( glow_material + '.glowIntensity', 0.4 )
 
 
 def createSampleEnvironment():
@@ -81,6 +89,10 @@ def createSampleEnvironment():
     floor = 'pPlane1'
     cmds.setAttr( floor + '.scaleX', 30 )
     cmds.setAttr( floor + '.scaleZ', 30 )
+    floor_material = cmds.shadingNode('lambert', asShader=True)
+    cmds.select( floor )
+    cmds.hyperShade( assign=floor_material )
+    cmds.setAttr( floor_material + '.color', 0.6, 0.4, 0.3 )
     
     cmds.CreatePolygonPlane()
     wall1 = 'pPlane2'
@@ -89,7 +101,7 @@ def createSampleEnvironment():
     cmds.setAttr( wall1 + '.rotateZ', 90 )
     cmds.setAttr( wall1 + '.translateX', -15 )
     cmds.setAttr( wall1 + '.translateY', 10 )
-    
+
     cmds.CreatePolygonPlane()
     wall2 = 'pPlane3'
     cmds.setAttr( wall2 + '.scaleX', 30 )
@@ -97,6 +109,12 @@ def createSampleEnvironment():
     cmds.setAttr( wall2 + '.rotateX', 90 )
     cmds.setAttr( wall2 + '.translateZ', -15 )
     cmds.setAttr( wall2 + '.translateY', 10 )
+    wall_material = cmds.shadingNode('lambert', asShader=True)
+    cmds.select( wall1 )
+    cmds.hyperShade( assign=wall_material )
+    cmds.select( wall2 )
+    cmds.hyperShade( assign=wall_material )
+    cmds.setAttr( wall_material + '.color', 0.1, 0.6, 0.5 )
     
     cmds.CreatePolygonCube()
     cube = 'pCube1'
@@ -105,16 +123,16 @@ def createSampleEnvironment():
     cmds.setAttr( cube + '.translateX', -5 )
     cmds.setAttr( cube + '.translateZ', -3 )
     cmds.setAttr( cube + '.rotateY', 30 )
-
-
-def moveCamera():
-    cmds.setAttr('persp.translateX', 9 )
-    cmds.setAttr('persp.translateY', 5 )
-    cmds.setAttr('persp.translateZ', 2 )
+    cube_material = cmds.shadingNode('lambert', asShader=True)
+    cmds.select( cube )
+    cmds.hyperShade( assign=cube_material )
+    cmds.setAttr( cube_material + '.color', 1.0, 0.1, 0.1 )
     
-    cmds.setAttr('persp.rotateX', -12 )
-    cmds.setAttr('persp.rotateY', 77 )
-    cmds.setAttr('persp.rotateZ', 0 )
+    cmds.CreatePointLight()
+    light = 'pointLight1'
+    cmds.setAttr( light + '.translateX', 20 )
+    cmds.setAttr( light + '.translateY', 20 )
+    cmds.setAttr( light + '.translateZ', -10 )
 
 
 # Clear scene
@@ -124,9 +142,6 @@ cmds.delete()
 # Setup new scene
 # Setup environment
 createSampleEnvironment()
-
-# Move camera
-moveCamera()
 
 # Setup particle system
 cmds.NCreateEmitter()
@@ -142,5 +157,5 @@ setEmitter( myEmitter2, myParticle2, 180 )
 
 # Setup glow
 cmds.CreatePolygonTorus()
-myGlow = ['pTorus1', 'polyTorus1']
+myGlow = ['pTorus1', 'polyTorus1', 'lambert1']
 setGlow( myGlow )
