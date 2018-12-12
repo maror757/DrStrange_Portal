@@ -5,13 +5,15 @@ import maya.mel as mel
 # Declare functions   
 def setNucleus( n ):
     # Physics prefs
-    nucleusWindSpeed = 2.139
+    #Old Version nucleusWindSpeed = 2.414
+    nucleusWindSpeed = 5.414
     nucleusWindNoise = 1
     
     # Physics
     cmds.setAttr( myNucleus + '.usePlane', 1 )
     cmds.setAttr( myNucleus + '.windSpeed', nucleusWindSpeed)
-    cmds.setAttr( myNucleus + '.windDirectionX', 1)
+    #Old Version cmds.setAttr( myNucleus + '.windDirectionX', 1)
+    cmds.setAttr( myNucleus + '.windDirectionX', -1)
     cmds.setAttr( myNucleus + '.windDirectionY', 1)
     cmds.setAttr( myNucleus + '.windDirectionZ', 1)
     cmds.setAttr( myNucleus + '.windNoise', nucleusWindNoise)
@@ -42,22 +44,30 @@ def setEmitter( e, p, pos ):
     particlesSpeed = 1
     particlesSpread = 0.2
     particlesWeight = 0.04
-    particlesLifespan = 1.5
-    particlesLifespanRandom = 1.0
+    #OldVersion particlesLifespan = 1.5
+    particlesLifespan = 1.0
+    #OldVersion particlesLifespanRandom = 1.0
+    particlesLifespanRandom = 2.0
     particlesTailSize = 4
  
     # Looks
     cmds.setAttr( p + '.particleRenderType', 6 )
     cmds.setAttr( p + '.bounce', 1 )
-    cmds.setAttr( p + '.color[1].color_Position', 1 )
-    cmds.setAttr( p + '.color[0].color_Color', 1, 0.75, 0 )
-    cmds.setAttr( p + '.color[1].color_Color', 1, 0.3259, 0 )
+    cmds.setAttr( p + '.color[0].color_Color', 0, 0, 0 )
+    cmds.setAttr( p + '.incandescence[1].incandescence_Position', 1 )
+    cmds.setAttr( p + '.incandescence[0].incandescence_Color', 1, 0.75, 0 )
+    cmds.setAttr( p + '.incandescence[1].incandescence_Color', 1, 0.492, 0 )
+    cmds.setAttr( p + '.incandescence[1].incandescence_Interp', 1)
+    cmds.setAttr( p + '.incandescenceInput', 1)
     #cmds.setAttr( p + '.aiRadiusMultiplier', 0.2 )
     cmds.setAttr( p + '.dynamicsWeight', particlesWeight )
     cmds.setAttr( p + '.lifespanMode', 2)
     cmds.setAttr( p + '.lifespan', particlesLifespan )
     cmds.setAttr( p + '.lifespanRandom', particlesLifespanRandom )
     cmds.setAttr( p + '.collide', 0 )
+    #New addition  
+    cmds.setAttr( p + '.pointMass', 3.4 )
+    
     cmds.setAttr( e + '.rate', particlesPerSec )
     cmds.setAttr( e + '.emitterType', 0 )
     cmds.setAttr( e + '.directionX', 0 )
@@ -81,67 +91,57 @@ def setGlow( g ):
     cmds.setAttr( glow_material + '.color', 1.0, 0.6, 0.1 )
     cmds.setAttr( glow_material + '.transparency', 0.2, 0.2, 0.2 )
     cmds.setAttr( glow_material + '.hideSource', True )
-    cmds.setAttr( glow_material + '.glowIntensity', 0.4 )
-
-
-def createSampleEnvironment():
-    cmds.CreatePolygonPlane()
-    floor = 'pPlane1'
-    cmds.setAttr( floor + '.scaleX', 30 )
-    cmds.setAttr( floor + '.scaleZ', 30 )
-    floor_material = cmds.shadingNode('lambert', asShader=True)
-    cmds.select( floor )
-    cmds.hyperShade( assign=floor_material )
-    cmds.setAttr( floor_material + '.color', 0.6, 0.4, 0.3 )
-    
-    cmds.CreatePolygonPlane()
-    wall1 = 'pPlane2'
-    cmds.setAttr( wall1 + '.scaleX', 20 )
-    cmds.setAttr( wall1 + '.scaleZ', 30 )
-    cmds.setAttr( wall1 + '.rotateZ', 90 )
-    cmds.setAttr( wall1 + '.translateX', -15 )
-    cmds.setAttr( wall1 + '.translateY', 10 )
-
-    cmds.CreatePolygonPlane()
-    wall2 = 'pPlane3'
-    cmds.setAttr( wall2 + '.scaleX', 30 )
-    cmds.setAttr( wall2 + '.scaleZ', 20 )
-    cmds.setAttr( wall2 + '.rotateX', 90 )
-    cmds.setAttr( wall2 + '.translateZ', -15 )
-    cmds.setAttr( wall2 + '.translateY', 10 )
-    wall_material = cmds.shadingNode('lambert', asShader=True)
-    cmds.select( wall1 )
-    cmds.hyperShade( assign=wall_material )
-    cmds.select( wall2 )
-    cmds.hyperShade( assign=wall_material )
-    cmds.setAttr( wall_material + '.color', 0.1, 0.6, 0.5 )
-    
-    cmds.CreatePolygonCube()
-    cube = 'pCube1'
-    cmds.setAttr( cube + '.scale', 3, 3, 3 )
-    cmds.setAttr( cube + '.translateY', 1.5 )
-    cmds.setAttr( cube + '.translateX', -5 )
-    cmds.setAttr( cube + '.translateZ', -3 )
-    cmds.setAttr( cube + '.rotateY', 30 )
-    cube_material = cmds.shadingNode('lambert', asShader=True)
-    cmds.select( cube )
-    cmds.hyperShade( assign=cube_material )
-    cmds.setAttr( cube_material + '.color', 1.0, 0.1, 0.1 )
+    cmds.setAttr( glow_material + '.glowIntensity', 0.5 )
     
     cmds.CreatePointLight()
-    light = 'pointLight1'
-    cmds.setAttr( light + '.translateX', 20 )
-    cmds.setAttr( light + '.translateY', 20 )
-    cmds.setAttr( light + '.translateZ', -10 )
+    pLight = 'pointLight1'
+    cmds.setAttr( pLight + '.translateY', 3 )
+    cmds.setAttr( pLight + '.color', 0.48, 0.24, 0.0 )
+    cmds.setAttr( pLight + '.intensity', 10 )
+    cmds.setAttr( pLight + '.decayRate', 2 )
+    
+    # Keyframes prefs
+    loops = 10
+    time = 200
+    
+    # Keyframes
+    #cmds.setKeyframe( glow_material + '.glowIntensity', 0.5 )
 
+    
+    cmds.setKeyframe( pLight + '.intensity', v=0 , t=0 )
+    cmds.setKeyframe( pLight + '.intensity', v=10 , t=100 )
+    
+    cmds.setKeyframe( pLight + '.intensity', v=6 , t=110 )
+    cmds.setKeyframe( pLight + '.intensity', v=10 , t=120 )
+    cmds.setKeyframe( pLight + '.intensity', v=5 , t=130 )
+    cmds.setKeyframe( pLight + '.intensity', v=9 , t=140 )
+    cmds.setKeyframe( pLight + '.intensity', v=6 , t=150 )
+    cmds.setKeyframe( pLight + '.intensity', v=8 , t=160 )
+    cmds.setKeyframe( pLight + '.intensity', v=5 , t=170 )
+    cmds.setKeyframe( pLight + '.intensity', v=9 , t=180 )
+    cmds.setKeyframe( pLight + '.intensity', v=7 , t=190 )
+    cmds.setKeyframe( pLight + '.intensity', v=5 , t=200 )
 
+def setSun():
+    cmds.CreateDirectionalLight()
+    sun = 'directionalLight1'
+    cmds.setAttr( sun + '.rotateX', -40 )
+   
+   
 # Clear scene
-cmds.select(all=True)
+cmds.select('emitter1')
+cmds.select('nParticle1', add=True)
+cmds.select('nucleus1', add=True)
+cmds.select('emitter2', add=True)
+cmds.select('nParticle2', add=True)
+cmds.select('pTorus1', add=True)
+cmds.select('directionalLight1', add=True)
+cmds.select('pointLight1', add=True)
 cmds.delete()
 
 # Setup new scene
 # Setup environment
-createSampleEnvironment()
+#createSampleEnvironment()
 
 # Setup particle system
 cmds.NCreateEmitter()
@@ -159,3 +159,5 @@ setEmitter( myEmitter2, myParticle2, 180 )
 cmds.CreatePolygonTorus()
 myGlow = ['pTorus1', 'polyTorus1', 'lambert1']
 setGlow( myGlow )
+# Setup sun
+setSun()
