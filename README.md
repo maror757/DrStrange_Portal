@@ -8,6 +8,10 @@ Make these changes in Maya
 
 ### Mental Ray Renderer (for Maya 2016)
 * Render Settings >> Presets >> Load Presets >> Production
+To remove shadows from nParticles
+* Windows >> Relationship Editors >> Light Linking >> Light-Centric ... Remove nParticles from pointLight
+Not done in the Python script
+* nParticles tailsize
 
 ### Links
 * https://help.autodesk.com/cloudhelp/2018/CHS/Maya-Tech-Docs/CommandsPython/index.html
