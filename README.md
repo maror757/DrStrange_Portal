@@ -17,3 +17,9 @@ Not done in the Python script
 * https://help.autodesk.com/cloudhelp/2018/CHS/Maya-Tech-Docs/CommandsPython/index.html
 * https://www.turbosquid.com/Search/3D-Models/free (free meshed)
 * https://www.youtube.com/watch?v=FLCwZs-EKJE
+
+### Todo
+* Mer flimmer
+* Keyframes till glown
+* Högre FPS
+* Rendera med "rätt" inställningar
