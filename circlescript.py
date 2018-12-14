@@ -1,5 +1,6 @@
 import maya.cmds as cmds
 import maya.mel as mel
+from random import random
 # H:\SFX\DrStrange_Portal (import functions)
 
 # Declare functions   
@@ -23,7 +24,7 @@ def setNucleus( n ):
 def setEmitter( e, p, pos ):
     # Keyframes prefs
     loops = 10
-    time = 200
+    time = 300
     
     # Keyframes
     cmds.move( 0,5,0, e )
@@ -31,13 +32,13 @@ def setEmitter( e, p, pos ):
     cmds.move( 0,-2,0, e + '.rotatePivot', r=True )
     
     cmds.setKeyframe( e + '.rotateX', v=pos, t=0 )
-    cmds.setKeyframe( e + '.rotateX', v=pos+360*loops, t=time )
+    cmds.setKeyframe( e + '.rotateX', v=pos+360*loops, t=time, itt='linear', ott='linear' )
     cmds.setKeyframe( e + '.scaleY', v=0, t=0 )
-    cmds.setKeyframe( e + '.scaleY', v=0.0, t=30 )
-    cmds.setKeyframe( e + '.scaleY', v=0.2, t=50 )
-    cmds.setKeyframe( e + '.scaleY', v=1, t=100 )
+    cmds.setKeyframe( e + '.scaleY', v=0.0, t=60 )
+    cmds.setKeyframe( e + '.scaleY', v=0.2, t=100 )
+    cmds.setKeyframe( e + '.scaleY', v=1, t=200 )
     cmds.setKeyframe( e + '.rate', v=500, t=0 )
-    cmds.setKeyframe( e + '.rate', v=3000, t=100 )
+    cmds.setKeyframe( e + '.rate', v=3000, t=200 )
     
     # Looks prefs
     particlesPerSec = 3000
@@ -91,7 +92,7 @@ def setGlow( g ):
     cmds.setAttr( glow_material + '.color', 1.0, 0.6, 0.1 )
     cmds.setAttr( glow_material + '.transparency', 0.2, 0.2, 0.2 )
     cmds.setAttr( glow_material + '.hideSource', True )
-    cmds.setAttr( glow_material + '.glowIntensity', 0.5 )
+    cmds.setAttr( glow_material + '.glowIntensity', 0.0 )
     
     cmds.CreatePointLight()
     pLight = 'pointLight1'
@@ -102,25 +103,28 @@ def setGlow( g ):
     
     # Keyframes prefs
     loops = 10
-    time = 200
+    time = 300
     
     # Keyframes
-    #cmds.setKeyframe( glow_material + '.glowIntensity', 0.5 )
-
+    cmds.setKeyframe( glow_material + '.glowIntensity', v=0.0, t=180 )
+    cmds.setKeyframe( glow_material + '.glowIntensity', v=0.5, t=200 )
     
     cmds.setKeyframe( pLight + '.intensity', v=0 , t=0 )
-    cmds.setKeyframe( pLight + '.intensity', v=10 , t=100 )
+    cmds.setKeyframe( pLight + '.intensity', v=4 , t=100 )
+    cmds.setKeyframe( pLight + '.intensity', v=5 , t=110 )
+    cmds.setKeyframe( pLight + '.intensity', v=3 , t=120 )
+    cmds.setKeyframe( pLight + '.intensity', v=6 , t=130 )
+    cmds.setKeyframe( pLight + '.intensity', v=4, t=140 )
+    cmds.setKeyframe( pLight + '.intensity', v=9, t=150 )
+    cmds.setKeyframe( pLight + '.intensity', v=5 , t=160 )
+    cmds.setKeyframe( pLight + '.intensity', v=8 , t=170 )
+    cmds.setKeyframe( pLight + '.intensity', v=7 , t=180 )
+    cmds.setKeyframe( pLight + '.intensity', v=10 , t=190 )
+    s = 200;
     
-    cmds.setKeyframe( pLight + '.intensity', v=6 , t=110 )
-    cmds.setKeyframe( pLight + '.intensity', v=10 , t=120 )
-    cmds.setKeyframe( pLight + '.intensity', v=5 , t=130 )
-    cmds.setKeyframe( pLight + '.intensity', v=9 , t=140 )
-    cmds.setKeyframe( pLight + '.intensity', v=6 , t=150 )
-    cmds.setKeyframe( pLight + '.intensity', v=8 , t=160 )
-    cmds.setKeyframe( pLight + '.intensity', v=5 , t=170 )
-    cmds.setKeyframe( pLight + '.intensity', v=9 , t=180 )
-    cmds.setKeyframe( pLight + '.intensity', v=7 , t=190 )
-    cmds.setKeyframe( pLight + '.intensity', v=5 , t=200 )
+    for x in range(0, 10):
+        cmds.setKeyframe( pLight + '.intensity', v=9+random() , t=s+x*10 )
+        cmds.setKeyframe( pLight + '.intensity', v=5+random() , t=s+x*10+5 )
 
 def setSun():
     cmds.CreateDirectionalLight()
