@@ -18,6 +18,9 @@ Not done in the Python script
 * https://www.turbosquid.com/Search/3D-Models/free (free meshed)
 * https://www.youtube.com/watch?v=FLCwZs-EKJE
 
+* https://www.youtube.com/watch?v=rX-Xmr-v57k
+* https://www.youtube.com/watch?v=3JwUNmw0rQQ
+
 ### Todo
 * Mer flimmer
 * Keyframes till glown
